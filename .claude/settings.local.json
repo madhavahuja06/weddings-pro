@@ -1,0 +1,21 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(NPM_CONFIG_CACHE=/tmp/.npm npm install @supabase/supabase-js lucide-react tailwindcss postcss autoprefixer)",
+      "Bash(npx tailwindcss init:*)",
+      "Bash(NPM_CONFIG_CACHE=/tmp/.npm npx tailwindcss init -p)",
+      "mcp__supabase__apply_migration",
+      "mcp__supabase__list_branches",
+      "Bash(NPM_CONFIG_CACHE=/tmp/.npm npm run dev)",
+      "mcp__supabase__get_project_url",
+      "mcp__supabase__get_anon_key",
+      "Bash(NPM_CONFIG_CACHE=/tmp/.npm npm install @tailwindcss/postcss)",
+      "Bash(rm:*)",
+      "mcp__supabase__list_tables",
+      "Bash(mv:*)",
+      "mcp__supabase__execute_sql"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}
