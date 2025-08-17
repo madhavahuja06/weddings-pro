@@ -1,13 +1,21 @@
 import { useState } from 'react'
-import { Heart, Camera, Users, Gift } from 'lucide-react'
+import { Heart, Camera, Users, Gift, AlertCircle } from 'lucide-react'
 import PhotoUpload from './components/PhotoUpload'
 import PhotoGallery from './components/PhotoGallery'
 import EmailVerification from './components/EmailVerification'
-import { supabase } from './lib/supabase'
+import { supabase, isSupabaseConfigured } from './lib/supabase'
 
 // Landing Page Component
 const LandingPage = ({ setCurrentView }) => (
   <div className="min-h-screen relative overflow-hidden">
+    {/* Configuration Warning Banner */}
+    {!isSupabaseConfigured && (
+      <div className="fixed top-0 left-0 right-0 z-50 bg-yellow-500 text-black p-3 text-center font-semibold">
+        <AlertCircle className="inline mr-2" size={20} />
+        Demo Mode: Supabase not configured. Set environment variables for full functionality.
+      </div>
+    )}
+    
     {/* Background Image with Overlay */}
     <div className="absolute inset-0">
       <div 
@@ -21,7 +29,7 @@ const LandingPage = ({ setCurrentView }) => (
     </div>
     
     {/* Modern Header */}
-    <header className="relative z-10 overflow-hidden">
+    <header className={`relative z-10 overflow-hidden ${!isSupabaseConfigured ? 'pt-16' : ''}`}>
       <div className="relative container mx-auto px-6 py-12">
         <div className="flex items-center justify-center animate-fade-in">
           <Heart className="mr-6 text-red-200 icon-glow floating" size={50} />
@@ -199,6 +207,26 @@ const SignupPage = ({ setCurrentView, formData, handleInputChange, setTempFormDa
       // Validate required fields
       if (!formData.brideName || !formData.groomName || !formData.email || !formData.weddingDate || !formData.password) {
         setSubmitMessage('Please fill in all required fields')
+        setIsSubmitting(false)
+        return
+      }
+
+      if (!isSupabaseConfigured) {
+        // Demo mode - simulate success
+        setSubmitMessage('🎉 Demo Mode: Wedding page created successfully! (Configure Supabase for real functionality)')
+        setTimeout(() => {
+          setCurrentView('landing')
+          // Reset form
+          setFormData({
+            brideName: '',
+            groomName: '',
+            email: '',
+            phone: '',
+            weddingDate: '',
+            venue: '',
+            password: ''
+          })
+        }, 3000)
         setIsSubmitting(false)
         return
       }
@@ -403,6 +431,14 @@ const RSVPPage = ({ setCurrentView }) => {
     try {
       if (!rsvpData.name || !rsvpData.attending) {
         setSubmitMessage('Please fill in your name and attendance status')
+        setIsSubmitting(false)
+        return
+      }
+
+      if (!isSupabaseConfigured) {
+        // Demo mode - simulate success
+        setSubmitMessage('🎉 Demo Mode: RSVP submitted successfully! (Configure Supabase for real functionality)')
+        setTimeout(() => setCurrentView('landing'), 3000)
         setIsSubmitting(false)
         return
       }

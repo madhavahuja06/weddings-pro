@@ -1,9 +1,18 @@
 import { createClient } from '@supabase/supabase-js'
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://placeholder.supabase.co'
+const supabaseKey = import.meta.env.VITE_SUPABASE_ANON_KEY || 'placeholder-key'
+
+// Check if environment variables are properly set
+const isConfigured = import.meta.env.VITE_SUPABASE_URL && import.meta.env.VITE_SUPABASE_ANON_KEY
+
+if (!isConfigured) {
+  console.warn('⚠️ Supabase environment variables not configured. Using demo mode.')
+  console.warn('Set VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY in your deployment environment.')
+}
 
 export const supabase = createClient(supabaseUrl, supabaseKey)
+export const isSupabaseConfigured = isConfigured
 
 // Database schema for reference:
 /*
